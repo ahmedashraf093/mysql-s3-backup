@@ -18,7 +18,7 @@ Docker container that periodically backups MySQL databases to S3-compatible stor
 ```yaml
 services:
   backup:
-    image: 192.168.1.89:5000/mysql-s3-backup:latest
+    image: ghcr.io/ahmedashraf093/mysql-s3-backup:latest
     environment:
       - SCHEDULE=@daily
       - MYSQL_HOST=mysql_service
