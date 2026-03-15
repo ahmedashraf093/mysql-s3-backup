@@ -1,0 +1,30 @@
+# this file is here to facilitate development/testing
+# $ docker compose up -d --build --force-recreate
+
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: testdb
+
+  backup:
+    build:
+      context: .
+    environment:
+      SCHEDULE: '@daily' # optional
+      BACKUP_KEEP_DAYS: 7 # optional
+      PASSPHRASE: passphrase # optional
+      S3_REGION: us-east-1
+      S3_ACCESS_KEY_ID: minioadmin
+      S3_SECRET_ACCESS_KEY: user@minio
+      S3_BUCKET: database-backups
+      S3_PREFIX: mysql
+      S3_ENDPOINT: https://s3.cds-connect.online
+      S3_S3_FORCE_PATH_STYLE: 'true'
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: all
+      MYSQL_USER: root
+      MYSQL_PASSWORD: rootpassword
