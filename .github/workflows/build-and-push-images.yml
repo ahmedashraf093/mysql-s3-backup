@@ -16,15 +16,6 @@ jobs:
       contents: read
       packages: write
 
-    strategy:
-      matrix:
-        include:
-          - { postgres: 14 }
-          - { postgres: 15 }
-          - { postgres: 16 }
-          - { postgres: 17 }
-          - { postgres: 18 }
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,7 +33,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ matrix.postgres }},enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'master') }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -56,8 +47,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          build-args: |
-            POSTGRES_VERSION=${{ matrix.postgres }}
           platforms: linux/amd64,linux/arm64
           provenance: false
           push: true
